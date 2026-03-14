@@ -1,17 +1,15 @@
 package me.yourname.onepiece;
 
+import net.minecraft.entity.player.EntityPlayer;
+
 public class Commands {
     
-    // This simulates a player typing a command in chat
-    public void handleCommand(String command) {
+    public void handleCommand(String command, EntityPlayer player, Haki hakiSystem) {
         if (command.equalsIgnoreCase("/haki on")) {
-            System.out.println("[Eagle-Piece] Your skin turns black... Armament Haki is active!");
+            hakiSystem.toggleArmament(player);
         } 
         else if (command.equalsIgnoreCase("/fruit info")) {
-            System.out.println("[Eagle-Piece] You possess the Gomu Gomu no Mi powers.");
-        } 
-        else {
-            System.out.println("[Eagle-Piece] Unknown command! Try /haki on.");
+            System.out.println("You are a Rubber Human.");
         }
     }
 }
