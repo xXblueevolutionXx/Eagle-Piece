@@ -10,26 +10,43 @@ public class OnepieceHUD extends Gui {
     private final Minecraft mc = Minecraft.getMinecraft();
 
     @SubscribeEvent
-    public void onRenderExperienceBar(RenderGameOverlayEvent.Post event) {
-        // We only want to draw text on the main game screen (not in menus)
-        if (event.type != RenderGameOverlayEvent.ElementType.EXPERIENCE) return;
+    public void onRenderHUD(RenderGameOverlayEvent.Post event) {
+        // Only draw on the main game screen, not in the inventory or menus
+        if (event.type != RenderGameOverlayEvent.ElementType.ALL) return;
 
         int x = 10;
         int y = 10;
-        int white = 0xFFFFFF;
-        int gold = 0xFFD700;
+        int berries = Main.instance.myFactions.getBerries();
+        
+        // --- RANK LOGIC ---
+        String rank = "Rookie";
+        int rankColor = 0xFFFFFF; // White
 
-        // 1. Draw Faction Name
-        String factionText = "Side: " + Main.instance.myFactions.getSide().toString();
-        this.drawString(mc.fontRendererObj, factionText, x, y, white);
+        if (berries > 100000) {
+            rank = "Emperor";
+            rankColor = 0xFF55FF; // Light Purple
+        } else if (berries > 25000) {
+            rank = "Warlord";
+            rankColor = 0x55FFFF; // Aqua
+        } else if (berries > 5000) {
+            rank = "Supernova";
+            rankColor = 0x55FF55; // Green
+        }
 
-        // 2. Draw Haki Status (Red if active, Gray if off)
-        String hakiStatus = Main.instance.myHaki.isArmamentActive ? "Haki: ON" : "Haki: OFF";
-        int hakiColor = Main.instance.myHaki.isArmamentActive ? 0xFF0000 : 0xAAAAAA;
-        this.drawString(mc.fontRendererObj, hakiStatus, x, y + 10, hakiColor);
-
-        // 3. Draw Berry Count
-        String berryText = "Berries: ฿" + Main.instance.myFactions.getBerries();
-        this.drawString(mc.fontRendererObj, berryText, x, y + 20, gold);
+        // --- DRAWING THE TEXT ---
+        // Faction
+        this.drawString(mc.fontRendererObj, "Side: " + Main.instance.myFactions.getSide(), x, y, 0xFFFFFF);
+        
+        // Rank
+        this.drawString(mc.fontRendererObj, "Rank: " + rank, x, y + 10, rankColor);
+        
+        // Berries (Gold color)
+        this.drawString(mc.fontRendererObj, "Berries: ฿" + berries, x, y + 20, 0xFFD700);
+        
+        // Haki Status
+        boolean hakiOn = Main.instance.myHaki.isArmamentActive;
+        String hakiText = hakiOn ? "Haki: ACTIVE" : "Haki: OFF";
+        int hakiColor = hakiOn ? 0xFF0000 : 0xAAAAAA;
+        this.drawString(mc.fontRendererObj, hakiText, x, y + 30, hakiColor);
     }
 }
