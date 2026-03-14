@@ -1,14 +1,9 @@
-package com.yourname.onepiece;
+package me.yourname.onepiece;
 
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-
-@Mod(modid = "onepiecemod", name = "Grand Line Evolved", version = "1.0")
 public class Main {
-
-    @Mod.EventHandler
-    public void init(FMLInitializationEvent event) {
-        // This is where you will eventually register your Devil Fruits and Haki!
-        System.out.println("Set sail! One Piece Mod is loading...");
+    public static void main(String[] args) {
+        // This is the starting point of your mod
+        System.out.println("Eagle-Piece Mod: Initialized!");
+        System.out.println("Prepare to set sail for the Grand Line.");
     }
 }
