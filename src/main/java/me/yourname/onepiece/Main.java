@@ -2,8 +2,10 @@ package me.yourname.onepiece;
 
 public class Main {
     public static void main(String[] args) {
-        // This is the starting point of your mod
-        System.out.println("Eagle-Piece Mod: Initialized!");
-        System.out.println("Prepare to set sail for the Grand Line.");
+        // Creating the Gomu Gomu no Mi
+        DevilFruit luffyFruit = new DevilFruit("Gomu Gomu no Mi", "Paramecia");
+        
+        // Simulating the player eating it
+        luffyFruit.eat();
     }
 }
