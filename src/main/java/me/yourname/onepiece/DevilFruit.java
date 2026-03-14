@@ -1,17 +1,21 @@
 package me.yourname.onepiece;
 
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.potion.Potion;
+import net.minecraft.potion.PotionEffect;
+
 public class DevilFruit {
     private String name;
-    private String powerType;
 
-    public DevilFruit(String name, String powerType) {
+    public DevilFruit(String name) {
         this.name = name;
-        this.powerType = powerType;
     }
 
-    public void eat() {
-        System.out.println("You ate the " + name + "!");
-        System.out.println("Power Type: " + powerType);
-        System.out.println("Warning: You can no longer swim!");
+    public void applyPower(EntityPlayer player) {
+        if (this.name.equalsIgnoreCase("Gomu Gomu")) {
+            // Give Jump Boost II (index 8) for 1000 ticks
+            player.addPotionEffect(new PotionEffect(Potion.jump.id, 1000, 1));
+            System.out.println("You are now made of rubber!");
+        }
     }
 }
