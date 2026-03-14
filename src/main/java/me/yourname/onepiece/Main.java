@@ -70,5 +70,6 @@ public class Main {
         } else if (myFactions.getSide() == Factions.Side.MARINE) {
             myFactions.applyFactionBuffs(event.player);
         }
+
     }
 }
