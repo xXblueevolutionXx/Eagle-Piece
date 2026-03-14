@@ -1,35 +1,36 @@
 package me.yourname.onepiece;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.DamageSource;
-import net.minecraft.block.material.Material;
-import net.minecraft.potion.Potion;
-import net.minecraft.potion.PotionEffect;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
+import net.minecraftforge.common.MinecraftForge;
 
-public class DevilFruit {
-    private String name;
+@Mod(modid = "eaglepiece", name = "Eagle Piece", version = "1.0")
+public class Main {
+    
+    // Create the "crew" (the other files)
+    public DevilFruit myFruit = new DevilFruit("Gomu Gomu");
+    public Haki myHaki = new Haki();
+    public Commands myCommands = new Commands();
 
-    public DevilFruit(String name) {
-        this.name = name;
+    @Mod.EventHandler
+    public void init(FMLInitializationEvent event) {
+        // This registers the mod so it can listen for you walking/swimming
+        MinecraftForge.EVENT_BUS.register(this);
+        System.out.println("Eagle-Piece: Grand Line is open!");
     }
 
-    // Gives the rubber powers
-    public void applyPower(EntityPlayer player) {
-        if (this.name.equalsIgnoreCase("Gomu Gomu")) {
-            // Potion ID 8 is Jump Boost
-            player.addPotionEffect(new PotionEffect(Potion.jump.id, 200, 1));
-        }
-    }
+    @SubscribeEvent
+    public void onPlayerTick(TickEvent.PlayerTickEvent event) {
+        // Every second, the game checks these 3 things:
+        
+        // 1. Give jump powers
+        myFruit.applyPower(event.player);
+        
+        // 2. Check if the player is drowning in water
+        myFruit.checkWaterWeakness(event.player);
 
-    // The "Curse of the Sea" logic
-    public void checkWaterWeakness(EntityPlayer player) {
-        if (player.isInsideOfMaterial(Material.water)) {
-            // Deals 1 point (half heart) of damage
-            player.attackEntityFrom(DamageSource.drown, 1.0F);
-            
-            // Slows the player down significantly
-            player.motionX *= 0.1;
-            player.motionZ *= 0.1;
-        }
+        // 3. (Optional) You could trigger commands here or via keybinds
     }
 }
