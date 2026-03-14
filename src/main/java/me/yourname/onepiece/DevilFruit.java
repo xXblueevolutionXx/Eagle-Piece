@@ -1,8 +1,8 @@
 package me.yourname.onepiece;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.potion.Potion;
-import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.DamageSource;
+import net.minecraft.block.material.Material;
 
 public class DevilFruit {
     private String name;
@@ -11,11 +11,21 @@ public class DevilFruit {
         this.name = name;
     }
 
+    // This is the power we added before
     public void applyPower(EntityPlayer player) {
         if (this.name.equalsIgnoreCase("Gomu Gomu")) {
-            // Give Jump Boost II (index 8) for 1000 ticks
-            player.addPotionEffect(new PotionEffect(Potion.jump.id, 1000, 1));
-            System.out.println("You are now made of rubber!");
+            player.addPotionEffect(new net.minecraft.potion.PotionEffect(8, 1000, 1));
+        }
+    }
+
+    // NEW: This is the weakness logic
+    public void checkWaterWeakness(EntityPlayer player) {
+        if (player.isInsideOfMaterial(Material.water)) {
+            // Deals half a heart of damage and slows the player down
+            player.attackEntityFrom(DamageSource.drown, 1.0F);
+            player.motionX *= 0.5;
+            player.motionZ *= 0.5;
+            System.out.println("The sea drains your energy!");
         }
     }
 }
