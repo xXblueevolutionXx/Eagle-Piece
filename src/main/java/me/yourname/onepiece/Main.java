@@ -9,28 +9,38 @@ import net.minecraftforge.common.MinecraftForge;
 @Mod(modid = "eaglepiece", name = "Eagle Piece", version = "1.0")
 public class Main {
     
-    // Create the "crew" (the other files)
+    // This 'instance' allows other files to talk to Main easily
+    public static Main instance;
+
+    // Initialize all your systems
     public DevilFruit myFruit = new DevilFruit("Gomu Gomu");
     public Haki myHaki = new Haki();
     public Commands myCommands = new Commands();
+    public Factions myFactions = new Factions();
+    public MobManager myMobs = new MobManager();
 
     @Mod.EventHandler
     public void init(FMLInitializationEvent event) {
-        // This registers the mod so it can listen for you walking/swimming
+        instance = this;
+
+        // Register everything to the Event Bus so the code actually runs
         MinecraftForge.EVENT_BUS.register(this);
-        System.out.println("Eagle-Piece: Grand Line is open!");
+        MinecraftForge.EVENT_BUS.register(myMobs); 
+        
+        System.out.println("Eagle-Piece: All systems connected!");
     }
 
     @SubscribeEvent
     public void onPlayerTick(TickEvent.PlayerTickEvent event) {
-        // Every second, the game checks these 3 things:
+        // 1. If you are a Pirate, you get Fruit powers but drown in water
+        if (myFactions.getSide() == Factions.Side.PIRATE) {
+            myFruit.applyPower(event.player);
+            myFruit.checkWaterWeakness(event.player);
+        } 
         
-        // 1. Give jump powers
-        myFruit.applyPower(event.player);
-        
-        // 2. Check if the player is drowning in water
-        myFruit.checkWaterWeakness(event.player);
-
-        // 3. (Optional) You could trigger commands here or via keybinds
+        // 2. If you are a Marine, you get Soru (Speed)
+        else if (myFactions.getSide() == Factions.Side.MARINE) {
+            myFactions.applyFactionBuffs(event.player);
+        }
     }
 }
