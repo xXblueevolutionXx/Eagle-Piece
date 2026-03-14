@@ -1,15 +1,26 @@
 package me.yourname.onepiece;
 
+// These lines tell the game where to find Minecraft's tools
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+
+// This @Mod line is CRITICAL. It registers your mod in the game.
+@Mod(modid = "eaglepiece", name = "Eagle Piece", version = "1.0")
 public class Main {
-    public static void main(String[] args) {
-        // Initialize the systems
+
+    // This is the "Init" method. It replaces the "main" method for mods.
+    @Mod.EventHandler
+    public void init(FMLInitializationEvent event) {
+        // Now we link your other files
         Haki playerHaki = new Haki();
         Commands gameCommands = new Commands();
+        DevilFruit rubberFruit = new DevilFruit("Gomu Gomu", "Paramecia");
 
-        // Simulate the player using a command
-        gameCommands.handleCommand("/haki on");
+        // These messages will now show up in the Game Console/Log
+        System.out.println("Eagle-Piece: Mod Loaded!");
         
-        // Train the player
+        rubberFruit.eat();
         playerHaki.train();
+        gameCommands.handleCommand("/haki on");
     }
 }
